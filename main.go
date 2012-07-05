@@ -46,6 +46,11 @@ var commands = []*Command{
 	cmdCreateIndex,
 	cmdDeleteIndex,
 
+	cmdTemplates,
+	cmdTemplate,
+	cmdCreateTemplate,
+	cmdDeleteTemplate,
+
 	cmdVersion,
 
 	cmdHelp,

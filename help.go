@@ -53,7 +53,7 @@ func printUsage() {
 	fmt.Printf("Supported commands are:\n\n")
 	for _, cmd := range commands {
 		if cmd.Short != "" {
-			fmt.Printf("  %-8s   %s\n", cmd.Name(), cmd.Short)
+			fmt.Printf("  %-16s   %s\n", cmd.Name(), cmd.Short)
 		}
 	}
 	fmt.Println()

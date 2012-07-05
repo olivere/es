@@ -61,6 +61,26 @@ Let's review the mapping of an index.
 	$ es mapping nonexistent
 	Error: IndexMissingException[[nonexistent] missing] (404)
 
+Templates, oh how I love thee... here's a sample session.
+
+	$ es templates
+	dummy-template
+	$ es template dummy-template
+	{
+	}
+	$ es create-template another-template < template.json
+	$ es templates
+	dummy-template
+	another-template
+	$ es template another-template
+	{
+	}
+	$ es delete-template another-template
+	$ es delete-templete -f another-template
+
+
+
+
 ## Credits
 
 Thanks a lot for the great folks working hard on
