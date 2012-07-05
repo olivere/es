@@ -44,6 +44,10 @@ func (c *Command) Name() string {
 
 // Running es on the command line will print these commands in order.
 var commands = []*Command{
+	cmdSearch,
+
+	cmdBulk,
+
 	cmdIndices,
 	cmdCreateIndex,
 	cmdDeleteIndex,
@@ -62,6 +66,8 @@ var commands = []*Command{
 	cmdDeleteTemplate,
 
 	cmdClusterHealth,
+	cmdClusterState,
+	cmdClusterNodes,
 
 	cmdVersion,
 	cmdApi,

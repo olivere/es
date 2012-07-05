@@ -75,6 +75,10 @@ func (r *Request) SetBodyJson(data interface{}) {
 	r.Header.Set("Content-Type", "application/json")
 }
 
+func (r *Request) SetBodyString(body string) {
+	r.SetBody(strings.NewReader(body))
+}
+
 func (r *Request) SetBody(body io.Reader) {
 	rc, ok := body.(io.ReadCloser)
 	if !ok && body != nil {
