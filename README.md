@@ -12,6 +12,45 @@ You need to compile yourself currently:
 	$ go build
 	$ ./es help
 
+## Commands
+
+Lets list indices.
+
+	$ es indices
+	master
+	marvel
+	dummy
+	$ es indices 'm.*'
+	master
+	marvel
+
+And create a new index. This can be useful if you e.g. added templates.
+
+	$ es create twitter
+	$ es indices
+	master
+	marvel
+	dummy
+	twitter
+	$ es create twitter
+	Error: IndexAlreadyExistsException[[twitter] Already exists] (400)
+	$ es create -f twitter
+
+Now, lets delete indices.
+
+	$ es delete twitter
+	$ es indices
+	master
+	marvel
+	dummy
+	$ es delete twitter
+	Error: IndexMissingException[[twitter] missing] (404)
+	$ es delete -f twitter
+	$ es indices
+	master
+	marvel
+	dummy
+
 ## Credits
 
 Thanks a lot for the great folks working hard on

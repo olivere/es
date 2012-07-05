@@ -13,6 +13,8 @@ const (
 	DefaultUrl = "http://localhost:9200"
 )
 
+var force bool
+
 type Command struct {
 	Run  func(cmd *Command, args []string)
 	Flag flag.FlagSet
@@ -39,6 +41,8 @@ func (c *Command) Name() string {
 // Running es on the command line will print these commands in order.
 var commands = []*Command{
 	cmdIndices,
+	cmdCreateIndex,
+	cmdDeleteIndex,
 
 	cmdVersion,
 
