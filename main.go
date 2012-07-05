@@ -14,6 +14,8 @@ const (
 )
 
 var force bool
+var flush bool
+var refresh bool
 
 type Command struct {
 	Run  func(cmd *Command, args []string)
@@ -47,6 +49,9 @@ var commands = []*Command{
 	cmdDeleteIndex,
 	cmdStatus,
 	cmdStats,
+	cmdRefresh,
+	cmdOptimize,
+	cmdFlush,
 
 	cmdMapping,
 	cmdPutMapping,
