@@ -17,6 +17,7 @@ Example:
 
   $ es mapping twitter
 `,
+	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-get-mapping.html",
 }
 
 func runMapping(cmd *Command, args []string) {

@@ -8,7 +8,7 @@ import (
 var cmdCreateIndex = &Command{
 	Run:   runCreateIndex,
 	Usage: "create [-f] <index>",
-	Short: "creates index",
+	Short: "create index",
 	Long: `
 Creates an empty index.
 
@@ -16,6 +16,7 @@ Example:
 
   $ es create marvel
 `,
+	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-create-index.html",
 }
 
 func init() {

@@ -3,13 +3,55 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"os/exec"
 	"runtime"
 	"strings"
 )
+
+var cmdApi = &Command{
+	Usage:  "api <command>",
+	Short:  "show API for command",
+	Long:   `Opens browser with API details for the specified command.`,
+	ApiUrl: "",
+}
+
+func init() {
+	cmdApi.Run = runApi
+}
+
+func runApi(cmd *Command, args []string) {
+	if len(args) == 0 {
+		printUsage()
+		return
+	}
+
+	if len(args) != 1 {
+		log.Fatal("too many arguments")
+	}
+
+	for _, cmd := range commands {
+		if cmd.Name() == args[0] && len(cmd.ApiUrl) > 0 {
+			// open browser
+			openBrowser := "open"
+			if _, err := exec.LookPath("xdg-open"); err == nil {
+				openBrowser = "xdg-open"
+			}
+			exec.Command(openBrowser, cmd.ApiUrl).Start()
+			return
+		}
+	}
+
+	fmt.Fprintf(os.Stderr, "No API information for command: %s\n", args[0])
+	os.Exit(2)
+}
+
+// Generic API for accessing ElasticSearch server starts here.
 
 type Request http.Request
 

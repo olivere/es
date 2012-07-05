@@ -21,6 +21,7 @@ Example:
   $ es templates 'mas.*'
   master-template
 `,
+	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-templates.html",
 }
 
 func init() {

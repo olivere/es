@@ -7,27 +7,29 @@ import (
 	"os"
 )
 
-var cmdCreateTemplate = &Command{
-	Run:   runCreateTemplate,
-	Usage: "create-template <template>",
-	Short: "create template",
+var cmdPutMapping = &Command{
+	Run:   runPutMapping,
+	Usage: "put-mapping <index> <type>",
+	Short: "create or update mapping",
 	Long: `
-Creates a new template.
+Creates or updates a mapping for a document type on an index.
+http://www.elasticsearch.org/guide/reference/api/admin-indices-put-mapping.html
 
 Example:
 
-  $ es create-template marvel < marvel-template.json
+  $ es put-mapping twitter tweet < tweet-mapping.json
 `,
-	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-templates.html",
+	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-put-mapping.html",
 }
 
-func runCreateTemplate(cmd *Command, args []string) {
-	if len(args) < 1 {
+func runPutMapping(cmd *Command, args []string) {
+	if len(args) != 2 {
 		cmd.printUsage()
 		os.Exit(1)
 	}
 
-	template := args[0]
+	index := args[0]
+	doctype := args[1]
 
 	var response struct {
 		Ok     bool   `json:"ok,omitempty"`
@@ -43,7 +45,7 @@ func runCreateTemplate(cmd *Command, args []string) {
 		log.Fatal("invalid json\n")
 	}
 
-	req := ESReq("PUT", "/_template/"+template)
+	req := ESReq("PUT", "/"+index+"/"+doctype+"/_mapping")
 	req.SetBodyJson(data)
 	req.Do(&response)
 	if len(response.Error) > 0 {

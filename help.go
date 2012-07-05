@@ -7,10 +7,11 @@ import (
 )
 
 var cmdVersion = &Command{
-	Run:   runVersion,
-	Usage: "version",
-	Short: "show version",
-	Long:  `Shows the version string.`,
+	Run:    runVersion,
+	Usage:  "version",
+	Short:  "show version",
+	Long:   `Shows the version string.`,
+	ApiUrl: "",
 }
 
 func runVersion(cmd *Command, args []string) {

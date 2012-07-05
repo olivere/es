@@ -8,7 +8,7 @@ import (
 var cmdDeleteIndex = &Command{
 	Run:   runDeleteIndex,
 	Usage: "delete [-f] <index>",
-	Short: "deletes index",
+	Short: "delete index",
 	Long: `
 Deletes an index.
 
@@ -16,6 +16,7 @@ Example:
 
   $ es delete marvel
 `,
+	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-delete-index.html",
 }
 
 func init() {

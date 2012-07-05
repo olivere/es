@@ -22,6 +22,8 @@ type Command struct {
 	Usage string
 	Short string
 	Long  string
+
+	ApiUrl string
 }
 
 func (c *Command) printUsage() {
@@ -41,10 +43,11 @@ func (c *Command) Name() string {
 // Running es on the command line will print these commands in order.
 var commands = []*Command{
 	cmdIndices,
-	cmdMapping,
-
 	cmdCreateIndex,
 	cmdDeleteIndex,
+
+	cmdMapping,
+	cmdPutMapping,
 
 	cmdTemplates,
 	cmdTemplate,
@@ -52,7 +55,7 @@ var commands = []*Command{
 	cmdDeleteTemplate,
 
 	cmdVersion,
-
+	cmdApi,
 	cmdHelp,
 }
 

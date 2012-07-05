@@ -6,10 +6,11 @@ import (
 )
 
 var cmdDeleteTemplate = &Command{
-	Run:   runDeleteTemplate,
-	Usage: "delete-template [-f] <template>",
-	Short: "deletes a template",
-	Long:  `Deletes the specified template.`,
+	Run:    runDeleteTemplate,
+	Usage:  "delete-template [-f] <template>",
+	Short:  "delete template",
+	Long:   `Deletes the specified template.`,
+	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-templates.html",
 }
 
 func init() {

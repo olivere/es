@@ -3,6 +3,10 @@
 `es` is a small command line tool to interact with the
 ElasticSearch search engine.
 
+Notice that you could do all of this with `curl` commands, as
+seen on the [ElasticSearch API](http://www.elasticsearch.org/guide/reference/api/).
+However, you probably save a few keystrokes with `es`.
+
 ## Setup
 
 You need to compile yourself currently:
@@ -14,7 +18,17 @@ You need to compile yourself currently:
 
 ## Commands
 
-Lets list indices.
+Before we start, you can always lookup the ElasticSearch API via
+the `api` command, like so:
+
+	$ es api indices
+
+The `api` command will open up a browser window with the API page
+that matches the specified command. You can find the complete
+[ElasticSearch API here](http://www.elasticsearch.org/guide/reference/api/).
+
+Let's get started. First we list existing indices, either all of them
+or via a regular expression.
 
 	$ es indices
 	master
@@ -24,7 +38,9 @@ Lets list indices.
 	master
 	marvel
 
-And create a new index. This can be useful if you e.g. added templates.
+Let's create a new index. Use the -f flag to force creation, i.e. it will
+not print an error if the index already exists (and won't touch the 
+existing index).
 
 	$ es create twitter
 	$ es indices
@@ -36,7 +52,7 @@ And create a new index. This can be useful if you e.g. added templates.
 	Error: IndexAlreadyExistsException[[twitter] Already exists] (400)
 	$ es create -f twitter
 
-Now, lets delete indices.
+Delete indices again.
 
 	$ es delete twitter
 	$ es indices
@@ -51,7 +67,7 @@ Now, lets delete indices.
 	marvel
 	dummy
 
-Let's review the mapping of an index.
+Let's review mappings, and even create mappings from the command line.
 
 	$ es mapping dummy
 	{
@@ -60,6 +76,21 @@ Let's review the mapping of an index.
 	}
 	$ es mapping nonexistent
 	Error: IndexMissingException[[nonexistent] missing] (404)
+	$ es create twitter
+	$ es put-mapping twitter tweet < tweet-mapping.json
+	$ es mapping twitter
+	{
+	  "twitter" : {
+	    "tweet" : {
+	      "properties" : {
+	        "message" : {
+	          "type" : "string",
+	          "store" : "yes"
+	        }
+	      }
+	    }
+	  }
+	}
 
 Templates, oh how I love thee... here's a sample session.
 

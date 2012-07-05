@@ -19,6 +19,7 @@ Example:
   {
   }
 `,
+	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-templates.html",
 }
 
 func init() {
