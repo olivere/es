@@ -62,6 +62,14 @@ You can also get the status of all indices. Just leave out the index name.
 	$ es status
 	{ ... }
 
+If you need information about the number of documents in an index and such,
+use the stats API call. You can use it with or without an index name.
+
+	$ es stats
+	{ ... }
+	$ es stats twitter
+	{ ... }
+
 Let's remove some indices.
 
 	$ es delete twitter
