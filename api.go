@@ -49,16 +49,23 @@ func (r *Request) SetBody(body io.Reader) {
 	}
 }
 
-func (r *Request) Do(v interface{}) {
+func (r *Request) Do(v interface{}) string {
 	res := checkResponse(http.DefaultClient.Do((*http.Request)(r)))
 	defer res.Body.Close()
 
+	bodyBytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	if v != nil {
-		err := json.NewDecoder(res.Body).Decode(v)
-		if err != nil {
-			log.Fatal(err)
+		jsonErr := json.Unmarshal(bodyBytes, v)
+		if jsonErr != nil {
+			log.Fatal(jsonErr)
 		}
 	}
+
+	return string(bodyBytes)
 }
 
 func checkResponse(res *http.Response, err error) *http.Response {

@@ -51,6 +51,16 @@ Now, lets delete indices.
 	marvel
 	dummy
 
+Let's review the mapping of an index.
+
+	$ es mapping dummy
+	{
+		"dummy" : {
+		}
+	}
+	$ es mapping nonexistent
+	Error: IndexMissingException[[nonexistent] missing] (404)
+
 ## Credits
 
 Thanks a lot for the great folks working hard on
