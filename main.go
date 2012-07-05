@@ -61,6 +61,8 @@ var commands = []*Command{
 	cmdCreateTemplate,
 	cmdDeleteTemplate,
 
+	cmdClusterHealth,
+
 	cmdVersion,
 	cmdApi,
 	cmdHelp,
