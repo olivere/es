@@ -52,7 +52,17 @@ existing index).
 	Error: IndexAlreadyExistsException[[twitter] Already exists] (400)
 	$ es create -f twitter
 
-Delete indices again.
+Print some useful information with the status API.
+
+	$ es status twitter
+	{ ... }
+
+You can also get the status of all indices. Just leave out the index name.
+
+	$ es status
+	{ ... }
+
+Let's remove some indices.
 
 	$ es delete twitter
 	$ es indices

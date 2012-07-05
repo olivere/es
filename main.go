@@ -45,6 +45,7 @@ var commands = []*Command{
 	cmdIndices,
 	cmdCreateIndex,
 	cmdDeleteIndex,
+	cmdStatus,
 
 	cmdMapping,
 	cmdPutMapping,
