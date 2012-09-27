@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	Version    = "0.1"
+	Version    = "0.1.1"
 	DefaultUrl = "http://localhost:9200"
 )
 
@@ -56,6 +56,9 @@ var commands = []*Command{
 	cmdRefresh,
 	cmdOptimize,
 	cmdFlush,
+
+	cmdAliases,
+	cmdIndexAliases,
 
 	cmdMapping,
 	cmdPutMapping,
