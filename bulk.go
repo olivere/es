@@ -13,16 +13,25 @@ import (
 
 var cmdBulk = &Command{
 	Run:   runBulk,
-	Usage: "bulk <index>",
+	Usage: "bulk [-v] <index>",
 	Short: "bulk import",
 	Long: `
 The bulk API enables many index/delete operations in a single API call.
 
+Use the -v/--verbose flag to print progress.
+
+Notice that if the bulk data file specifies the index name, 
+the argument specified on the command line will have no effect.
+
 Example:
 
-  $ es bulk twitter < twitter-data.json
+  $ es bulk -v twitter < twitter-data.json
 `,
 	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/bulk.html",
+}
+
+func init() {
+	cmdBulk.Flag.BoolVar(&verbose, "v", false, "verbose")
 }
 
 func bulkReader(input chan string, done chan bool) {
@@ -63,11 +72,16 @@ func bulkCommitter(index string, input chan string, done chan bool) {
 			return
 		}
 	}
-	fmt.Fprintln(os.Stderr, "")
+
+	if verbose {
+		fmt.Fprintln(os.Stderr, "\n")
+	}
 }
 
 func bulkCommit(index string, lines []string, numLines int) {
-	fmt.Fprintf(os.Stderr, "Bulk importing %9d\r", numLines)
+	if verbose {
+		fmt.Fprintf(os.Stderr, "Bulk importing %9d\r", numLines)
+	}
 
 	type itemsData struct {
 		Index   string `json:"_index,omitempty"`

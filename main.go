@@ -13,6 +13,7 @@ const (
 	DefaultUrl = "http://localhost:9200"
 )
 
+var verbose bool
 var force bool
 var flush bool
 var refresh bool
