@@ -47,8 +47,6 @@ func (c *Command) Name() string {
 var commands = []*Command{
 	cmdSearch,
 
-	cmdBulk,
-
 	cmdIndices,
 	cmdCreateIndex,
 	cmdDeleteIndex,
@@ -68,6 +66,9 @@ var commands = []*Command{
 	cmdTemplate,
 	cmdCreateTemplate,
 	cmdDeleteTemplate,
+
+	cmdBulk,
+	cmdReindex,
 
 	cmdClusterHealth,
 	cmdClusterState,
