@@ -141,6 +141,10 @@ And, to get a list of all aliases, use:
     alias-2 -> index1
     another-alias -> index2
 
+Finally, there's some helper command, e.g. reindexing one index into
+another:
+
+    $ es reindex -v twitter twitter-snapshot
 
 
 ## Credits
