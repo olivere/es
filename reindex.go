@@ -43,11 +43,10 @@ func runReindex(cmd *Command, args []string) {
 	target := args[1]
 
 	// Get a client
-	client, err := elastic.NewClient(http.DefaultClient)
+	client, err := elastic.NewClient(http.DefaultClient, esUrl)
 	if err != nil {
 		log.Fatal("Error: %v", err)
 	}
-	client.Url = esUrl
 
 	// Create target index, if not already exists
 	exists, err := client.IndexExists(target).Do()
