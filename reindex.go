@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/olivere/elastic"
 	"log"
 	"net/http"
 	_ "net/http/httputil"
 	"os"
-	"github.com/olivere/elastic"
+	"time"
 )
 
 var cmdReindex = &Command{
@@ -65,7 +66,7 @@ func runReindex(cmd *Command, args []string) {
 
 	// Scan through source
 	bulkSize := 1000
-	bulk := client.Bulk().Index(target).Pretty(true).DebugOnError(true)
+	bulk := client.Bulk().Index(target).DebugOnError(true)
 	inserted := 0
 
 	cursor, err := client.Scan(source).Do()
@@ -86,7 +87,7 @@ func runReindex(cmd *Command, args []string) {
 		if sr.Hits != nil && sr.Hits.Hits != nil {
 			for _, hit := range sr.Hits.Hits {
 				indexReq := &elastic.BulkIndexRequest{
-					Id: hit.Id,
+					Id:   hit.Id,
 					Type: hit.Type,
 					Data: string(*hit.Source),
 				}
@@ -98,22 +99,18 @@ func runReindex(cmd *Command, args []string) {
 					fmt.Fprintf(os.Stderr, "Reindexing %9d\r", inserted)
 				}
 
-				if bulk.NumberOfActions()%bulkSize-1 == bulkSize-1 {
-					_, err := bulk.Do()
+				if bulk.NumberOfActions() >= bulkSize {
+					bulk, err = commitBulk(client, bulk, target)
 					if err != nil {
 						log.Fatal("Error: %v", err)
 					}
-
-					// Create a new bulk request
-					bulk = client.Bulk().Index(target) //.Pretty(true).DebugOnError(true)
 				}
 			}
 		}
 	}
 
 	if bulk.NumberOfActions() > 0 {
-
-		_, err := bulk.Do()
+		bulk, err = commitBulk(client, bulk, target)
 		if err != nil {
 			log.Fatal("Error: %v", err)
 		}
@@ -128,4 +125,30 @@ func runReindex(cmd *Command, args []string) {
 	if verbose {
 		fmt.Fprintf(os.Stderr, "Reindexed %9d    \n", inserted)
 	}
+}
+
+// commitBulk commits the bulk actions to Elasticsearch. When an error
+// occurs, it retries the bulk operation several times before failing.
+func commitBulk(client *elastic.Client, bulk *elastic.BulkService, indexName string) (*elastic.BulkService, error) {
+	sleepSeconds := int64(1)
+	numRetries := 5
+
+	for {
+		_, err := bulk.Do()
+		if err != nil {
+			numRetries -= 1
+			if numRetries < 0 {
+				return bulk, err
+			}
+			time.Sleep(time.Duration(sleepSeconds) * time.Second)
+			sleepSeconds *= 2
+		} else {
+			break
+		}
+	}
+
+	// Return a new bulk request
+	bulk = client.Bulk().Index(indexName).DebugOnError(true)
+
+	return bulk, nil
 }
