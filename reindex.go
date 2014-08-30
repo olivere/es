@@ -86,11 +86,11 @@ func runReindex(cmd *Command, args []string) {
 
 		if sr.Hits != nil && sr.Hits.Hits != nil {
 			for _, hit := range sr.Hits.Hits {
-				indexReq := &elastic.BulkIndexRequest{
-					Id:   hit.Id,
-					Type: hit.Type,
-					Data: string(*hit.Source),
-				}
+				indexReq := elastic.NewBulkIndexRequest().
+					Id(hit.Id).
+					Type(hit.Type).
+					Doc(string(*hit.Source))
+
 				bulk.Add(indexReq)
 
 				inserted += 1
