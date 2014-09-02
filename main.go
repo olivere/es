@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	Version    = "0.1.1"
+	Version    = "0.1.2"
 	DefaultUrl = "http://localhost:9200"
 )
 
@@ -46,6 +46,7 @@ func (c *Command) Name() string {
 // Running es on the command line will print these commands in order.
 var commands = []*Command{
 	cmdSearch,
+	cmdCount,
 
 	cmdIndices,
 	cmdCreateIndex,
