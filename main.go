@@ -13,10 +13,12 @@ const (
 	DefaultUrl = "http://localhost:9200"
 )
 
-var verbose bool
-var force bool
-var flush bool
-var refresh bool
+var (
+	verbose bool
+	force   bool
+	flush   bool
+	refresh bool
+)
 
 type Command struct {
 	Run  func(cmd *Command, args []string)

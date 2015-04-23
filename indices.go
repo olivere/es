@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"sort"
+
+	"github.com/olivere/elastic"
 )
 
 var cmdIndices = &Command{
@@ -34,19 +37,30 @@ func runIndices(cmd *Command, args []string) {
 		pattern = args[0]
 	}
 
-	var mappings map[string]interface{}
-	ESReq("GET", "/_mapping").Do(&mappings)
-	for k, _ := range mappings {
+	// Get a client
+	client, err := elastic.NewClient(elastic.SetURL(esUrl))
+	if err != nil {
+		log.Fatal("%v", err)
+	}
+	indices, err := client.IndexNames()
+	if err != nil {
+		log.Fatal("%v", err)
+	}
+
+	// Sort by default
+	sort.Strings(indices)
+
+	for _, index := range indices {
 		if len(pattern) > 0 {
-			matched, err := regexp.MatchString(pattern, k)
+			matched, err := regexp.MatchString(pattern, index)
 			if err != nil {
 				log.Fatal("invalid pattern")
 			}
 			if matched {
-				fmt.Println(k)
+				fmt.Println(index)
 			}
 		} else {
-			fmt.Println(k)
+			fmt.Println(index)
 		}
 	}
 }
