@@ -105,7 +105,7 @@ func runReindex(cmd *Command, args []string) {
 	}
 
 	// Use the Elastic Reindexer
-	ix := elastic.NewReindexer(sourceClient, sourceIndex, targetIndex)
+	ix := elastic.NewReindexer(sourceClient, sourceIndex, elastic.CopyToTargetIndex(targetIndex))
 	ix = ix.TargetClient(targetClient)
 	ix = ix.BulkSize(1000)
 	ix = ix.Scroll("5m")
