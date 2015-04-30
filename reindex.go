@@ -11,7 +11,7 @@ import (
 
 var cmdReindex = &Command{
 	Run:   runReindex,
-	Usage: "reindex [-v] <source> <target>",
+	Usage: "reindex [-v] [-bulk=<n>] [-shards=<n>] [-replicas=<n>] <source> <target>",
 	Short: "reindex one index to another index",
 	Long: `
 The reindex command takes the documents from the source index
@@ -35,12 +35,17 @@ Example:
 
 var (
 	sourceURL, targetURL string
+	bulkSize             int
+	shards, replicas     int
 )
 
 func init() {
 	cmdReindex.Flag.BoolVar(&verbose, "v", false, "verbose")
 	cmdReindex.Flag.StringVar(&sourceURL, "source", "", "URL of source cluster")
 	cmdReindex.Flag.StringVar(&targetURL, "target", "", "URL of target cluster")
+	cmdReindex.Flag.IntVar(&bulkSize, "bulk", 1000, "bulk size")
+	cmdReindex.Flag.IntVar(&shards, "shards", -1, "number of shards for target index")
+	cmdReindex.Flag.IntVar(&replicas, "replicas", -1, "number of replicas for target index")
 }
 
 func runReindex(cmd *Command, args []string) {
@@ -81,18 +86,6 @@ func runReindex(cmd *Command, args []string) {
 		os.Exit(0)
 	}
 
-	// Create target index, if not already exists
-	exists, err = targetClient.IndexExists(targetIndex).Do()
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
-	if !exists {
-		_, err := targetClient.CreateIndex(targetIndex).Do()
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
-	}
-
 	// Progress callback
 	progress := func(current, total int64) {
 		if verbose {
@@ -107,7 +100,11 @@ func runReindex(cmd *Command, args []string) {
 	// Use the Elastic Reindexer
 	ix := elastic.NewReindexer(sourceClient, sourceIndex, elastic.CopyToTargetIndex(targetIndex))
 	ix = ix.TargetClient(targetClient)
-	ix = ix.BulkSize(1000)
+	if bulkSize > 0 {
+		ix = ix.BulkSize(bulkSize)
+	}
+	ix = ix.Shards(shards)
+	ix = ix.Replicas(replicas)
 	ix = ix.Scroll("5m")
 	ix = ix.Progress(progress)
 	ix = ix.StatsOnly(true)
