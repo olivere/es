@@ -23,6 +23,10 @@ index and won't lose any data.
 You can also copy indices from one cluster to another by using the -source
 and -target options.
 
+Specifying -shards and/or -replicas is also possible; however, the target
+index must not exist. Otherwise, -shards/-replicas will not be changed in
+the target index.
+
 Use the -v flag to print progress.
 
 Example:
