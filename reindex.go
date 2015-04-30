@@ -86,6 +86,32 @@ func runReindex(cmd *Command, args []string) {
 		os.Exit(0)
 	}
 
+	// Check if the target index exists. If it doesn't, create it with
+	// the number of shards/replicas specified.
+	exists, err = targetClient.IndexExists(targetIndex).Do()
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+	if !exists {
+		settings := make(map[string]interface{})
+		if shards > 0 || replicas >= 0 {
+			ixs := make(map[string]interface{})
+			if shards > 0 {
+				ixs["number_of_shards"] = shards
+			}
+			if replicas >= 0 {
+				ixs["number_of_replicas"] = replicas
+			}
+			settings["index"] = ixs
+		}
+		_, err = targetClient.CreateIndex(targetIndex).BodyJson(settings).Do()
+		if err != nil {
+			log.Fatalf("%v", err)
+		}
+	} else if shards > 0 || replicas >= 0 {
+		fmt.Fprint(os.Stderr, "Shards and/or replicas will not be changed on an existing index\n")
+	}
+
 	// Progress callback
 	progress := func(current, total int64) {
 		if verbose {
@@ -103,8 +129,6 @@ func runReindex(cmd *Command, args []string) {
 	if bulkSize > 0 {
 		ix = ix.BulkSize(bulkSize)
 	}
-	ix = ix.Shards(shards)
-	ix = ix.Replicas(replicas)
 	ix = ix.Scroll("5m")
 	ix = ix.Progress(progress)
 	ix = ix.StatsOnly(true)
