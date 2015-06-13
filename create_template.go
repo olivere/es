@@ -1,8 +1,6 @@
 package main
 
 import (
-	"bufio"
-	"encoding/json"
 	"log"
 	"os"
 )
@@ -36,13 +34,7 @@ func runCreateTemplate(cmd *Command, args []string) {
 		Status int    `json:"status,omitempty"`
 	}
 
-	// parse Stdin into JSON
-	var data interface{}
-	reader := bufio.NewReader(os.Stdin)
-	if err := json.NewDecoder(reader).Decode(&data); err != nil {
-		log.Fatal("invalid json\n")
-	}
-
+	data := getJsonFromStdin()
 	req := ESReq("PUT", "/_template/"+template)
 	req.SetBodyJson(data)
 	req.Do(&response)

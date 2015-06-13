@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"bufio"
+	"encoding/json"
 	"log"
 	"os"
 	"strings"
@@ -43,6 +45,21 @@ func (c *Command) Name() string {
 		name = name[:i]
 	}
 	return name
+}
+
+func getJsonFromStdin() interface{} {
+	data := struct{}{}
+	reader := bufio.NewReader(os.Stdin)
+	stats, err := os.Stdin.Stat()
+	if err != nil {
+		fmt.Println("file.Stat()", err)
+	}
+	if stats.Size() > 0 {
+		if err := json.NewDecoder(reader).Decode(&data); err != nil {
+			log.Fatal("invalid json\n")
+		}
+	}
+	return data
 }
 
 // Running es on the command line will print these commands in order.
