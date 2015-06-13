@@ -11,7 +11,7 @@ var cmdSnapshot = &Command{
 	Usage: "snapshot <repo> <snapshot>",
 	Short: "print snapshot",
 	Long: `
-Creates a new snapshot.
+Print a snapshot.
 
 Example:
 
