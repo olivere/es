@@ -1,0 +1,163 @@
+#compdef es
+
+local curcontext="$curcontext" state line _gems _opts ret=1
+
+_arguments -C -A "-v" -A "--version" \
+	'(- 1 *)'{-v,--version}'[display version information]' \
+	'1: :->cmds' \
+	'*:: :->args' && ret=0
+
+case $state in
+	cmds)
+		_values "es command" \
+      "search[searches an index]" \
+      "count[count documents in indices]" \
+      "indices[list all indices]" \
+      "create[create index]" \
+      "delete[delete index]" \
+      "open[open index]" \
+      "close[close index]" \
+      "settings[print index settings]" \
+      "status[prints index status]" \
+      "stats[prints index statistics]" \
+      "refresh[refreshes indices]" \
+      "optimize[optimizes indices]" \
+      "flush[flushes indices]" \
+      "flush-disable[disables flush]" \
+      "flush-enable[enables flush]" \
+      "aliases[list all aliases]" \
+      "index-aliases[list all aliases of an index]" \
+      "mapping[list mapping]" \
+      "put-mapping[create or update mapping]" \
+      "templates[list all templates]" \
+      "template[print template]" \
+      "create-template[create template]" \
+      "delete-template[delete template]" \
+      "bulk[bulk import]" \
+      "reindex[reindex indices]" \
+      "cluster-health[prints cluster health]" \
+      "cluster-state[prints cluster state]" \
+      "cluster-nodes[prints cluster nodes information]" \
+      "repos[list snapshot repos]" \
+      "repo[print snapshot repo]" \
+      "create-repo[create snapshot repo]" \
+      "delete-repo[delete snapshot repo]" \
+      "snapshots[list all snapshots in a repo]" \
+      "snapshot[print snapshot]" \
+      "create-snapshot[create snapshot]" \
+      "delete-snapshot[delete snapshot]" \
+      "restore-snapshot[restore snapshot]" \
+      "snapshot-status[print snapshot status]" \
+      "version[show version]" \
+      "api[show API for command]" \
+      "help[show help]"
+    ret=0
+		;;
+	args)
+		case $line[1] in
+			help)
+				_values 'commands' \
+                    'search' \
+                    'bulk' \
+                    'reindex' \
+                    'indices' \
+                    'create' \
+                    'delete' \
+                    'settings' \
+                    'status' \
+                    'stats' \
+                    'refresh' \
+                    'optimize' \
+                    'flush' \
+                    'flush-disable' \
+                    'flush-enable' \
+                    'aliases' \
+                    'index-aliases' \
+                    'mapping' \
+                    'put-mapping' \
+                    'templates' \
+                    'template' \
+                    'create-template' \
+                    'delete-template' \
+                    'cluster-health' \
+                    'cluster-state' \
+                    'cluster-nodes' \
+                    'version' \
+                    'api' \
+                    'help' && ret=0
+				;;
+			(search|settings|status|stats|refresh|optimize|flush|flush-disable|flush-enable|mapping|put-mapping)
+				#_arguments \
+				#	'(-p)--pretty[Pretty print output]' \
+				#	#'(--gemfile)--gemfile=-[use the specified gemfile instead of Gemfile]:gemfile' \
+				#ret=0
+        _indices=( $(es indices 2> /dev/null) )
+        if [[ $_indices != "" ]]; then
+          _values 'indices' $_indices && ret=0
+        fi
+				;;
+			bulk|reindex)
+				_arguments \
+					'(-v)--verbose[Print progress]'
+        _indices=( $(es indices 2> /dev/null) )
+        if [[ $_indices != "" ]]; then
+          _values 'indices' $_indices && ret=0
+        fi
+				;;
+			#exec)
+			#	_normal && ret=0
+			(delete|create)
+				_arguments \
+					'(-f)--force[Force]'
+        _indices=( $(es indices 2> /dev/null) )
+        if [[ $_indices != "" ]]; then
+          _values 'indices' $_indices && ret=0
+        fi
+				;;
+      template)
+        _templates=( $(es templates 2> /dev/null) )
+        if [[ $_templates != "" ]]; then
+          _values 'templates' $_templates && ret=0
+        fi
+				;;
+      (create-template|delete-template)
+				_arguments \
+					'(-f)--force[Force]'
+        _templates=( $(es templates 2> /dev/null) )
+        if [[ $_templates != "" ]]; then
+          _values 'templates' $_templates && ret=0
+        fi
+				;;
+      repo)
+        _repos=( $(es repos 2> /dev/null) )
+        if [[ $_repos != "" ]]; then
+          _values 'repos' $_repos && ret=0
+        fi
+        ;;
+      snapshots)
+        _repos=( $(es repos 2> /dev/null) )
+        if [[ $_repos != "" ]]; then
+          _values 'repos' $_repos && ret=0
+        fi
+        ;;
+			#exec)
+			#	_normal && ret=0
+			#	;;
+			#(open|show)
+			#	_gems=( $(bundle show 2> /dev/null | sed -e '/^  \*/!d; s/^  \* \([^ ]*\) .*/\1/') )
+			#	if [[ $_gems != "" ]]; then
+			#		_values 'gems' $_gems && ret=0
+			#	fi
+			#	;;
+			#*)
+			#	_opts=(  $(bundle help $line[1] | sed -e '/^  \[-/!d; s/^  \[\(-[^=]*\)=.*/\1/') )
+			#	_opts+=( $(bundle help $line[1] | sed -e '/^  -/!d; s/^  \(-.\), \[\(-[^=]*\)=.*/\1 \2/') )
+			#	if [[ $_opts != "" ]]; then
+			#		_values 'options' $_opts && ret=0
+			#	fi
+			#	;;
+		esac
+		;;
+esac
+
+return ret
