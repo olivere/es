@@ -58,11 +58,12 @@ case $state in
 			help)
 				_values 'commands' \
                     'search' \
-                    'bulk' \
-                    'reindex' \
+                    'count' \
                     'indices' \
                     'create' \
                     'delete' \
+                    'open' \
+                    'close' \
                     'settings' \
                     'status' \
                     'stats' \
@@ -79,24 +80,32 @@ case $state in
                     'template' \
                     'create-template' \
                     'delete-template' \
+                    'bulk' \
+                    'reindex' \
                     'cluster-health' \
                     'cluster-state' \
                     'cluster-nodes' \
+                    'repos' \
+                    'repo' \
+                    'create-repo' \
+                    'delete-repo' \
+                    'snapshots' \
+                    'snapshot' \
+                    'create-snapshot' \
+                    'delete-snapshot' \
+                    'restore-snapshot' \
+                    'snapshot-status' \
                     'version' \
                     'api' \
                     'help' && ret=0
 				;;
-			(search|settings|status|stats|refresh|optimize|flush|flush-disable|flush-enable|mapping|put-mapping)
-				#_arguments \
-				#	'(-p)--pretty[Pretty print output]' \
-				#	#'(--gemfile)--gemfile=-[use the specified gemfile instead of Gemfile]:gemfile' \
-				#ret=0
+			(search|count|settings|status|stats|refresh|optimize|flush|flush-disable|flush-enable|mapping|put-mapping)
         _indices=( $(es indices 2> /dev/null) )
         if [[ $_indices != "" ]]; then
           _values 'indices' $_indices && ret=0
         fi
 				;;
-			bulk|reindex)
+			(bulk|reindex)
 				_arguments \
 					'(-v)--verbose[Print progress]'
         _indices=( $(es indices 2> /dev/null) )
@@ -129,6 +138,14 @@ case $state in
         fi
 				;;
       repo)
+        _repos=( $(es repos 2> /dev/null) )
+        if [[ $_repos != "" ]]; then
+          _values 'repos' $_repos && ret=0
+        fi
+        ;;
+      delete-repo)
+        _arguments \
+          '(-f)--force[Force]'
         _repos=( $(es repos 2> /dev/null) )
         if [[ $_repos != "" ]]; then
           _values 'repos' $_repos && ret=0
