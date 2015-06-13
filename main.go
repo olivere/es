@@ -70,6 +70,8 @@ var commands = []*Command{
 	cmdIndices,
 	cmdCreateIndex,
 	cmdDeleteIndex,
+	cmdOpenIndex,
+	cmdCloseIndex,
 	cmdSettings,
 	cmdStatus,
 	cmdStats,
@@ -96,6 +98,18 @@ var commands = []*Command{
 	cmdClusterHealth,
 	cmdClusterState,
 	cmdClusterNodes,
+
+	cmdRepos,
+	cmdRepo,
+	cmdCreateRepo,
+	cmdDeleteRepo,
+
+	cmdSnapshots,
+	cmdSnapshot,
+	cmdCreateSnapshot,
+	cmdDeleteSnapshot,
+	cmdRestoreSnapshot,
+	cmdSnapshotStatus,
 
 	cmdVersion,
 	cmdApi,
