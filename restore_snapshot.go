@@ -6,10 +6,17 @@ import (
 )
 
 var cmdRestoreSnapshot = &Command{
-	Run:    runRestoreSnapshot,
-	Usage:  "restore-snapshot [-f] <snapshot>",
-	Short:  "restore snapshot",
-	Long:   `Restores the specified snapshot.`,
+	Run:   runRestoreSnapshot,
+	Usage: "restore-snapshot [-f] <repo> <snapshot>",
+	Short: "restore snapshot",
+	Long: `
+Restores the specified snapshot.
+
+Example:
+
+  $ es restore-snapshot my_backup snapshot1
+  $ es restore-snapshot -f my_backup snapshot1
+`,
 	ApiUrl: "http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-snapshots.html#_restore",
 }
 
