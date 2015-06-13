@@ -5,27 +5,27 @@ import (
 	"os"
 )
 
-var cmdCreateTemplate = &Command{
-	Run:   runCreateTemplate,
-	Usage: "create-template <template>",
-	Short: "create template",
+var cmdCreateRepo = &Command{
+	Run:   runCreateRepo,
+	Usage: "create-repo <repo>",
+	Short: "create snapshot repo",
 	Long: `
-Creates a new template.
+Creates a new snapshot repo.
 
 Example:
 
-  $ es create-template marvel < marvel-template.json
+  $ es create-repo nfs < nfs-repo.json
 `,
-	ApiUrl: "http://www.elasticsearch.org/guide/reference/api/admin-indices-templates.html",
+	ApiUrl: "http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-snapshots.html#_repositories",
 }
 
-func runCreateTemplate(cmd *Command, args []string) {
+func runCreateRepo(cmd *Command, args []string) {
 	if len(args) < 1 {
 		cmd.printUsage()
 		os.Exit(1)
 	}
 
-	template := args[0]
+	repo := args[0]
 
 	var response struct {
 		Ok     bool   `json:"ok,omitempty"`
@@ -35,7 +35,7 @@ func runCreateTemplate(cmd *Command, args []string) {
 	}
 
 	data := getJsonFromStdin()
-	req := ESReq("PUT", "/_template/"+template)
+	req := ESReq("PUT", "/_snapshot/"+repo)
 	req.SetBodyJson(data)
 	req.Do(&response)
 	if len(response.Error) > 0 {
