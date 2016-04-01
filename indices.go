@@ -40,11 +40,11 @@ func runIndices(cmd *Command, args []string) {
 	// Get a client
 	client, err := elastic.NewClient(elastic.SetURL(esUrl))
 	if err != nil {
-		log.Fatal("%v", err)
+		log.Fatal(err)
 	}
 	indices, err := client.IndexNames()
 	if err != nil {
-		log.Fatal("%v", err)
+		log.Fatal(err)
 	}
 
 	// Sort by default
