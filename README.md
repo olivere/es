@@ -11,8 +11,8 @@ However, you probably save a few keystrokes with `es`.
 
 You need to compile yourself currently:
 
-	  $ git clone https://github.com/olivere/es
-	  $ go get
+	  $ go get github.com/olivere/es
+	  $ cd $GOPATH/src/github.com/olivere/es
 	  $ go build
 	  $ ./es help
 
