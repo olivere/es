@@ -1,10 +1,12 @@
-# ElasticSearch command line tool
+# Elasticsearch command line tool
 
 `es` is a small command line tool to interact with the
-ElasticSearch search engine.
+Elasticsearch search engine.
+
+**Warning** This tool currently only supports Elasticsearch 1.x.
 
 Notice that you could do all of this with `curl` commands, as
-seen on the [ElasticSearch API](http://www.elasticsearch.org/guide/reference/api/).
+seen on the [Elasticsearch API](http://www.elasticsearch.org/guide/reference/api/).
 However, you probably save a few keystrokes with `es`.
 
 ## Setup
@@ -18,14 +20,14 @@ You need to compile yourself currently:
 
 ## Commands
 
-Before we start, you can always lookup the ElasticSearch API via
+Before we start, you can always lookup the Elasticsearch API via
 the `api` command, like so:
 
 	  $ es api indices
 
 The `api` command will open up a browser window with the API page
 that matches the specified command. You can find the complete
-[ElasticSearch API here](http://www.elasticsearch.org/guide/reference/api/).
+[Elasticsearch API here](http://www.elasticsearch.org/guide/reference/api/).
 
 Let's get started. First we list existing indices, either all of them
 or via a regular expression.
@@ -150,8 +152,8 @@ another:
 ## Credits
 
 Thanks a lot for the great folks working hard on
-[ElasticSearch](http://www.elasticsearch.org/) and
-[Google Go](http://golang.org/).
+[Elasticsearch](http://www.elasticsearch.org/) and
+[Go](http://golang.org/).
 
 Also a big thanks to [Blake Mizerany](https://github.com/bmizerany) 
 and the [fast heroku client](https://github.com/bmizerany/hk)
