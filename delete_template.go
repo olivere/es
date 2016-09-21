@@ -26,13 +26,10 @@ func runDeleteTemplate(cmd *Command, args []string) {
 	template := args[0]
 
 	var response struct {
-		Ok     bool   `json:"ok,omitempty"`
-		Ack    bool   `json:"acknowledged,omitempty"`
-		Error  string `json:"error,omitempty"`
-		Status int    `json:"status,omitempty"`
+		Ack bool `json:"acknowledged,omitempty"`
 	}
 	ESReq("DELETE", "/_template/"+template).Do(&response)
-	if !force && len(response.Error) > 0 {
-		log.Fatalf("Error: %v (%v)\n", response.Error, response.Status)
+	if !force && !response.Ack {
+		log.Fatalf("Error: %v\n", response)
 	}
 }
