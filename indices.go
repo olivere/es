@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"sort"
 
-	"github.com/olivere/elastic"
+	elastic "gopkg.in/olivere/elastic.v2"
 )
 
 var cmdIndices = &Command{
@@ -38,7 +38,7 @@ func runIndices(cmd *Command, args []string) {
 	}
 
 	// Get a client
-	client, err := elastic.NewClient(elastic.SetURL(esUrl))
+	client, err := elastic.NewClient(elastic.SetURL(esUrl), elastic.SetSniff(false))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,0 +1,9 @@
+hash: 435aebf58fe881671eaef39ff47b8779f8b512d3c25737af8547e2a1996bc80b
+updated: 2017-02-27T18:35:09.014247963+01:00
+imports:
+- name: gopkg.in/olivere/elastic.v2
+  version: be79ff0d0a9e360bba99e0a015888d0f414dc7bf
+  subpackages:
+  - backoff
+  - uritemplates
+testImports: []
