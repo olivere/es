@@ -1,3 +1,10 @@
+# Deprecation notice
+
+This tool is not supported any more. You may achieve the same result with
+simple curl requests to your Elasticsearch cluster.
+See [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/_exploring_your_cluster.html) for details.
+
+
 # Elasticsearch command line tool
 
 `es` is a small command line tool to interact with the
@@ -41,7 +48,7 @@ or via a regular expression.
 	  marvel
 
 Let's create a new index. Use the -f flag to force creation, i.e. it will
-not print an error if the index already exists (and won't touch the 
+not print an error if the index already exists (and won't touch the
 existing index).
 
 	  $ es create twitter
@@ -155,6 +162,6 @@ Thanks a lot for the great folks working hard on
 [Elasticsearch](http://www.elasticsearch.org/) and
 [Go](http://golang.org/).
 
-Also a big thanks to [Blake Mizerany](https://github.com/bmizerany) 
+Also a big thanks to [Blake Mizerany](https://github.com/bmizerany)
 and the [fast heroku client](https://github.com/bmizerany/hk)
 for inspiration on how to create a Go-based command line tool.
